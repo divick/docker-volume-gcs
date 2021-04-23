@@ -27,7 +27,7 @@ type GCSVolume struct {
 	bucket  string
 	count   int
 	flags   []string
-	keyFile string
+	//keyFile string
 	mounted bool
 	path    string
 }
@@ -64,6 +64,7 @@ func (d GCSDriver) Create(r *volume.CreateRequest) error {
 
 	// If a key was set but does not exist, assume it is the raw JSON contents.
 	// If a key was not set, default to <volume name>.json in the key mount location.
+	/*
 	keyFile, keyFileSelected := r.Options["key"]
 	if keyFileSelected {
 		keyPath := filepath.Join(KeyMount, keyFile)
@@ -81,8 +82,10 @@ func (d GCSDriver) Create(r *volume.CreateRequest) error {
 		log.Warningf("A key file was not selected, defaulting to %s/%s", KeyMount, keyName)
 		keyFile = filepath.Join(KeyMount, keyName)
 	}
+	*/
 
-	allFlags := []string{fmt.Sprintf("--key-file=%s", keyFile), "-o=allow_other"}
+	// allFlags := []string{fmt.Sprintf("--key-file=%s", keyFile), "-o=allow_other"}
+	allFlags := []string{"-o=allow_other"}
 	if flags, ok := r.Options["flags"]; ok {
 		parsedFlags := strings.Fields(flags)
 		if parsedFlags != nil {
@@ -99,7 +102,7 @@ func (d GCSDriver) Create(r *volume.CreateRequest) error {
 		bucket:  bucket,
 		count:   1,
 		flags:   allFlags,
-		keyFile: keyFile,
+		//keyFile: keyFile,
 		mounted: false,
 		path:    volumePath,
 	}
